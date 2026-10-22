@@ -1,0 +1,28 @@
+{% extends "juegos_app/base.html" %}
+
+{% block contenido %}
+<h1>
+    {% if tipo == "instalable" %}Juegos para instalar
+    {% elif tipo == "web" %}Juegos para jugar en la web
+    {% else %}Todos los juegos{% endif %}
+</h1>
+
+<div class="grid">
+    {% for juego in juegos %}
+    <div class="card">
+        {% if juego.imagen %}<img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">{% endif %}
+        <div class="card-body">
+            <h3><a href="{% url 'juegos_app:detalle' juego.pk %}">{{ juego.titulo }}</a></h3>
+            <span class="badge">{{ juego.get_tipo_display }}</span>
+            <p>
+                {% for genero in juego.generos.all %}
+                    <span class="badge">{{ genero }}</span>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay juegos todavía.</p>
+    {% endfor %}
+</div>
+{% endblock %}

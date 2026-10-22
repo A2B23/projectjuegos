@@ -1,0 +1,244 @@
+[
+{
+  "model": "juegos_app.genero",
+  "pk": 1,
+  "fields": {
+    "nombre": "disparos en primera persona, supervivencia y zombi"
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 2,
+  "fields": {
+    "nombre": "disparos en primera persona y supervivencia."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 3,
+  "fields": {
+    "nombre": "disparos en primera persona y acción."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 4,
+  "fields": {
+    "nombre": "deportes y skateboarding."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 5,
+  "fields": {
+    "nombre": "deportes y habilidad; combina movimiento y desliza"
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 6,
+  "fields": {
+    "nombre": "disparos en primera persona y ciencia ficción."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 7,
+  "fields": {
+    "nombre": "deportes y fútbol."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 8,
+  "fields": {
+    "nombre": "acción, aventura y mundo abierto."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 9,
+  "fields": {
+    "nombre": "acción, aventura y conducción."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 10,
+  "fields": {
+    "nombre": "disparos en primera persona y ciencia ficción/fant"
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 11,
+  "fields": {
+    "nombre": "disparos en primera persona, acción e historia."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 12,
+  "fields": {
+    "nombre": "disparos en primera persona; acción táctica y mult"
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 13,
+  "fields": {
+    "nombre": "ol de acción y fantasía oscura."
+  }
+},
+{
+  "model": "juegos_app.genero",
+  "pk": 14,
+  "fields": {
+    "nombre": "estrategia por turnos y artillería."
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 1,
+  "fields": {
+    "titulo": "Call of Duty: Black Ops Zombies",
+    "descripcion": "disparos en primera persona, supervivencia y zombis.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRipag9kAepfxkRZLupsoQsGlhsfMfdpzp-7Gl6r6lWCA&s=10",
+    "tipo": "web",
+    "url": "https://vel.gg/bsz",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T00:52:28.404Z",
+    "generos": [
+      1
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 2,
+  "fields": {
+    "titulo": "Moon",
+    "descripcion": "disparos en primera persona y supervivencia.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoOBr61FTnD-KrLHW0KSlVs6ePjvOoJeM5g84ohhLTLg&s=10",
+    "tipo": "instalable",
+    "url": "https://store.steampowered.com/app/1933840/Moon_Mystery/?l=spanish",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T00:55:15.676Z",
+    "generos": [
+      1
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 3,
+  "fields": {
+    "titulo": "Black Ops 2",
+    "descripcion": "disparos en primera persona y supervivencia de zombis.",
+    "imagen": "https://image.api.playstation.com/vulcan/ap/rnd/202606/2619/c4ce7fe379aa05dd3f6ecc11e8fa38dfea03d4b4a8bad73a.png",
+    "tipo": "instalable",
+    "url": "https://store.steampowered.com/agecheck/app/202970/?l=spanish&snr=1_7_7_230_150_1",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T00:57:45.461Z",
+    "generos": [
+      1
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 4,
+  "fields": {
+    "titulo": "Modern Warfare 2",
+    "descripcion": "disparos en primera persona y acción.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRpd5SFIjlOTwQgt-u_E7HffT6gBvcPyXo8UAeDmwkqqBv61d3BWgPp1pe&s=10",
+    "tipo": "instalable",
+    "url": "https://www.activision.com/es/games/call-of-duty/call-of-duty-black-ops-2",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T00:59:10.572Z",
+    "generos": [
+      12
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 5,
+  "fields": {
+    "titulo": "Skate 3",
+    "descripcion": "— deportes y skateboarding.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbudhhJK5t24n99GW37cDLG5HZPtQZWY-JhSxGadNEGA&s=10",
+    "tipo": "web",
+    "url": "https://skate.aaddpp.lol/",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T01:00:26.314Z",
+    "generos": [
+      4
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 6,
+  "fields": {
+    "titulo": "CS Surf",
+    "descripcion": "deportes y habilidad; combina movimiento y deslizamiento.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShNVzCGNjThm1wZJtvDNOsRPBJaPAYW3twcc96pARKZs9EQnaXnonxi3e1&s=10",
+    "tipo": "web",
+    "url": "https://surfd.net/",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T01:01:33.731Z",
+    "generos": [
+      5
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 7,
+  "fields": {
+    "titulo": "Halo: Combat Evolved .",
+    "descripcion": "— disparos en primera persona y ciencia ficción",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEROcq3XlR1YF5E468_-pvF_ZUCQjVRxRVRQI5gYNDjL9hSwJGGwQuvoJX&s=10",
+    "tipo": "web",
+    "url": "https://mitchellhynes.com/combat-lab/",
+    "creador": "https://thumb.wikimedia.org/wikipedia/en/thumb/8/80/Halo_-_Combat_Evolved_%28XBox_version_-_box_art%",
+    "fecha_agregado": "2026-10-22T01:02:31.316Z",
+    "generos": [
+      6
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 8,
+  "fields": {
+    "titulo": "GTA 5",
+    "descripcion": "— acción, aventura y mundo abierto.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOI1OaLTEu_YKv1uDgDQOCBRyLpOsca7VNBUf_kuIBEg&s=10",
+    "tipo": "instalable",
+    "url": "https://www.rockstargames.com/es/gta-v",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T01:03:43.235Z",
+    "generos": [
+      8
+    ]
+  }
+},
+{
+  "model": "juegos_app.juego",
+  "pk": 9,
+  "fields": {
+    "titulo": "PES 6",
+    "descripcion": "— deportes y fútbol.",
+    "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5xMADDD0BBhvuAIuTIG1l_OLqBJHZ1MnMkYhggHeYOJKbX65E-k1nfgE&s=10",
+    "tipo": "web",
+    "url": "https://pes6.optijuegos.net/",
+    "creador": "",
+    "fecha_agregado": "2026-10-22T01:04:35.365Z",
+    "generos": [
+      7
+    ]
+  }
+}
+]
