@@ -21,6 +21,8 @@
 </head>
 <body>
     <header>
+        <a href="{% url 'juegos_app:crear' %}">Crear juego</a>  
+        <a href="{% url 'juegos_app:lista' %}">Volver al listado</a>
         <a href="{% url 'juegos_app:lista' %}">🎮 Inicio</a>
         <a href="{% url 'juegos_app:lista' %}?tipo=instalable">Para instalar</a>
         <a href="{% url 'juegos_app:lista' %}?tipo=web">Jugar en la web</a>

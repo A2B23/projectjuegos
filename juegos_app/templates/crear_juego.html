@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crear juego</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #f5f5f5;
+        }
+
+        .contenedor {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 32px;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #4fc3f7;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 11px;
+            color: #f5f5f5;
+            background: #292929;
+            border: 1px solid #555;
+            border-radius: 6px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        button, .volver {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 11px 18px;
+            border: 0;
+            border-radius: 6px;
+            background: #4fc3f7;
+            color: #111;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover, .volver:hover {
+            background: #81d4fa;
+        }
+
+        .errorlist {
+            color: #ff8a80;
+        }
+    </style>
+</head>
+<body>
+    <main class="contenedor">
+        <h1>Crear juego</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar juego</button>
+        </form>
+
+        <a class="volver" href="{% url 'juegos_app:lista' %}">
+            Volver al listado
+        </a>
+    </main>
+</body>
+</html>

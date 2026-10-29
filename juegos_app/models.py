@@ -25,10 +25,18 @@ class Juego(models.Model):
     url = models.URLField(help_text="Web oficial (instalable) o enlace para jugar (web)")
     generos = models.ManyToManyField(Genero, blank=True, related_name="juegos")
     creador = models.CharField(max_length=100, blank=True)
-    fecha_agregado = models.DateTimeField(auto_now_add=True)
+    fecha_agregado = models.DateField()
 
     class Meta:
         ordering = ["-fecha_agregado"]
 
     def __str__(self):
         return self.titulo
+
+
+
+
+
+
+
+

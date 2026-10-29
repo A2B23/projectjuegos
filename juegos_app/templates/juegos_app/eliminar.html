@@ -1,0 +1,13 @@
+{% extends "juegos_app/base.html" %}
+
+{% block contenido %}
+  <h1>Eliminar juego</h1>
+
+  <p>¿Seguro que quieres eliminar <strong>{{ juego.titulo }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, eliminar</button>
+    <a href="{% url 'juegos_app:lista' %}">Cancelar</a>
+  </form>
+{% endblock %}

@@ -4,23 +4,38 @@
 
 {% block contenido %}
 <h1>{{ juego.titulo }}</h1>
+
 <span class="badge">{{ juego.get_tipo_display }}</span>
+
 {% for genero in juego.generos.all %}
     <span class="badge">{{ genero }}</span>
 {% endfor %}
 
 {% if juego.imagen %}
-<p><img src="{{ juego.imagen }}" alt="{{ juego.titulo }}" style="max-width:100%; border-radius:8px;"></p>
+<p>
+    <img src="{{ juego.imagen }}" alt="{{ juego.titulo }}"
+         style="max-width:100%; border-radius:8px;">
+</p>
 {% endif %}
 
 <p>{{ juego.descripcion|linebreaks }}</p>
-{% if juego.creador %}<p><strong>Creador:</strong> {{ juego.creador }}</p>{% endif %}
+
+{% if juego.creador %}
+<p><strong>Creador:</strong> {{ juego.creador }}</p>
+{% endif %}
 
 {% if juego.tipo == "instalable" %}
-    <a class="btn" href="{{ juego.url }}" target="_blank" rel="noopener">Ir a la web oficial</a>
+    <a class="btn" href="{{ juego.url }}" target="_blank" rel="noopener">
+        Ir a la web oficial
+    </a>
 {% else %}
-    <a class="btn" href="{{ juego.url }}" target="_blank" rel="noopener">Jugar ahora</a>
+    <a class="btn" href="{{ juego.url }}" target="_blank" rel="noopener">
+        Jugar ahora
+    </a>
 {% endif %}
+
+<a class="btn" href="{% url 'juegos_app:editar' juego.pk %}">Editar juego</a>
+<a class="btn" href="{% url 'juegos_app:eliminar' juego.pk %}">Eliminar juego</a>
 
 <p><a href="{% url 'juegos_app:lista' %}">← Volver</a></p>
 {% endblock %}

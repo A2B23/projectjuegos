@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ titulo }}</title>
+</head>
+<body>
+    <style>
+        :root {
+    color-scheme: dark;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #10131a;
+    color: #f2f4f8;
+}
+
+main {
+    width: min(700px, calc(100% - 32px));
+    margin: 48px auto;
+}
+
+h1 {
+    margin-bottom: 24px;
+    color: #ffffff;
+}
+
+form {
+    padding: 28px;
+    background: #1a202b;
+    border: 1px solid #303949;
+    border-radius: 14px;
+    box-shadow: 0 12px 35px rgb(0 0 0 / 25%);
+}
+
+form p {
+    margin: 0 0 18px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+form input,
+form textarea,
+form select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #3b4658;
+    border-radius: 8px;
+    background: #111722;
+    color: #f2f4f8;
+    font: inherit;
+}
+
+form textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: 2px solid #4fc3f7;
+    border-color: transparent;
+}
+
+form button,a {
+    padding: 11px 18px;
+    border: 0;
+    border-radius: 8px;
+    background: #4fc3f7;
+    color: #071018;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #81d4fa;
+}
+
+main > p a {
+    display: inline-block;
+    margin-top: 18px;
+    color: #81d4fa;
+    text-decoration: none;
+}
+
+main > p a:hover {
+    text-decoration: underline;
+}
+
+.errorlist {
+    color: #ff8a80;
+}
+    </style>
+    <h1>{{ titulo }}</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+    <a class="volver" href="{% url 'juegos_app:lista' %}">
+            Volver al listado
+        </a>
+
+    <p><a href="{% url 'juegos_app:lista' %}">Cancelar</a></p>
+</body>
+</html>
