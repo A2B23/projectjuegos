@@ -1,0 +1,117 @@
+{% extends "juegos_app/base.html" %}
+
+{% block titulo %}Quiz gamer{% endblock %}
+
+{% block contenido %}
+<style>
+    .quiz { max-width: 760px; margin: 0 auto; }
+    .quiz-panel { padding: 1.5rem; background: #1f1f1f; border-radius: 12px; }
+    .quiz-controls { display: flex; gap: .75rem; align-items: center; margin: 1rem 0; }
+    .quiz select, .quiz button { padding: .7rem 1rem; border: 0; border-radius: 6px; font: inherit; }
+    .quiz button { background: #4fc3f7; color: #101010; font-weight: bold; cursor: pointer; }
+    .quiz button:disabled { cursor: default; opacity: .65; }
+    .quiz-options { display: grid; gap: .75rem; margin: 1.25rem 0; }
+    .quiz-options button { width: 100%; text-align: left; background: #333; color: #eee; }
+    .quiz-options button:hover:not(:disabled) { background: #444; }
+    #quiz-message { min-height: 1.5em; }
+    .quiz-credit { color: #aaa; font-size: .85rem; }
+    .quiz-credit a { color: #4fc3f7; }
+</style>
+
+<section class="quiz" data-api-url="{% url 'juegos_app:api_trivia_pregunta' %}">
+    <h1>Quiz gamer</h1>
+    <p>Responde preguntas de videojuegos y acumula puntos.</p>
+
+    <div class="quiz-controls">
+        <label for="dificultad">Dificultad:</label>
+        <select id="dificultad">
+            <option value="easy">Fácil</option>
+            <option value="medium" selected>Media</option>
+            <option value="hard">Difícil</option>
+        </select>
+        <button id="siguiente" type="button">Empezar</button>
+    </div>
+
+    <div class="quiz-panel">
+        <p id="quiz-status" role="status" aria-live="polite">Pulsa “Empezar” para cargar una pregunta.</p>
+        <h2 id="quiz-question"></h2>
+        <div id="quiz-options" class="quiz-options"></div>
+        <p id="quiz-message" aria-live="polite"></p>
+        <p><strong>Puntos:</strong> <span id="quiz-score">0</span> · Preguntas: <span id="quiz-count">0</span></p>
+    </div>
+
+    <p class="quiz-credit">
+        Preguntas de <a href="https://opentdb.com/" target="_blank" rel="noopener">Open Trivia DB</a>,
+        categoría Videojuegos. Licencia CC BY-SA 4.0.
+    </p>
+</section>
+
+<script>
+(() => {
+    const quiz = document.querySelector(".quiz");
+    const dificultad = document.getElementById("dificultad");
+    const siguiente = document.getElementById("siguiente");
+    const estado = document.getElementById("quiz-status");
+    const pregunta = document.getElementById("quiz-question");
+    const opciones = document.getElementById("quiz-options");
+    const mensaje = document.getElementById("quiz-message");
+    const marcador = document.getElementById("quiz-score");
+    const contador = document.getElementById("quiz-count");
+    let respuestaCorrecta = "";
+    let puntos = 0;
+    let total = 0;
+    let respondida = true;
+
+    async function cargarPregunta() {
+        estado.textContent = "Consultando la API de trivias…";
+        pregunta.textContent = "";
+        opciones.replaceChildren();
+        mensaje.textContent = "";
+        siguiente.disabled = true;
+
+        try {
+            const url = new URL(quiz.dataset.apiUrl, window.location.origin);
+            url.searchParams.set("dificultad", dificultad.value);
+            const respuesta = await fetch(url, { headers: { "Accept": "application/json" } });
+            const datos = await respuesta.json();
+            if (!respuesta.ok) throw new Error(datos.error || "No se pudo cargar la pregunta.");
+
+            respuestaCorrecta = datos.respuesta_correcta;
+            pregunta.textContent = datos.pregunta;
+            estado.textContent = `${datos.categoria} · ${dificultad.options[dificultad.selectedIndex].text}`;
+            respondida = false;
+
+            for (const opcion of datos.opciones) {
+                const boton = document.createElement("button");
+                boton.type = "button";
+                boton.textContent = opcion;
+                boton.addEventListener("click", () => responder(opcion));
+                opciones.append(boton);
+            }
+            siguiente.textContent = "Siguiente pregunta";
+        } catch (error) {
+            estado.textContent = error.message;
+        } finally {
+            siguiente.disabled = false;
+        }
+    }
+
+    function responder(opcion) {
+        if (respondida) return;
+        respondida = true;
+        total += 1;
+        if (opcion === respuestaCorrecta) {
+            puntos += 1;
+            mensaje.textContent = "¡Correcto!";
+        } else {
+            mensaje.textContent = `Respuesta correcta: ${respuestaCorrecta}`;
+        }
+        marcador.textContent = puntos;
+        contador.textContent = total;
+        for (const boton of opciones.querySelectorAll("button")) boton.disabled = true;
+    }
+
+    siguiente.addEventListener("click", cargarPregunta);
+})();
+</script>
+{% endblock %}

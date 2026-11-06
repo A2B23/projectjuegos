@@ -7,22 +7,153 @@
     {% else %}Todos los juegos{% endif %}
 </h1>
 
-<div class="grid">
-    {% for juego in juegos %}
-    <div class="card">
-        {% if juego.imagen %}<img src="{{ juego.imagen }}" alt="{{ juego.titulo }}">{% endif %}
-        <div class="card-body">
-            <h3><a href="{% url 'juegos_app:detalle' juego.pk %}">{{ juego.titulo }}</a></h3>
-            <span class="badge">{{ juego.get_tipo_display }}</span>
-            <p>
-                {% for genero in juego.generos.all %}
-                    <span class="badge">{{ genero }}</span>
-                {% endfor %}
-            </p>
-        </div>
-    </div>
-    {% empty %}
-    <p>No hay juegos todavía.</p>
-    {% endfor %}
-</div>
+<form id="busqueda-juegos" method="get" action="{% url 'juegos_app:lista' %}">
+    <input
+        type="search"
+        name="titulo"
+        placeholder="Buscar por título"
+        value="{{ titulo }}"
+    >
+
+    <select name="tipo">
+        <option value="">Todos los tipos</option>
+        <option value="web" {% if tipo == "web" %}selected{% endif %}>
+            Jugable en la web
+        </option>
+        <option value="instalable" {% if tipo == "instalable" %}selected{% endif %}>
+            Para instalar
+        </option>
+    </select>
+
+    <button type="submit">Buscar</button>
+</form>
+
+<p id="estado-busqueda" role="status" aria-live="polite"></p>
+<div
+    id="resultados-juegos"
+    class="grid"
+    data-api-url="{% url 'juegos_app:api_juegos' %}"
+    data-detalle-url="{% url 'juegos_app:detalle' 0 %}"
+></div>
+<nav id="paginacion-juegos" aria-label="Paginación de juegos">
+    <button id="pagina-anterior" type="button" disabled>Anterior</button>
+    <span id="numero-pagina"></span>
+    <button id="pagina-siguiente" type="button" disabled>Siguiente</button>
+</nav>
+
+<script>
+(() => {
+    const form = document.getElementById("busqueda-juegos");
+    const inputTitulo = form.elements.titulo;
+    const selectTipo = form.elements.tipo;
+    const resultados = document.getElementById("resultados-juegos");
+    const estado = document.getElementById("estado-busqueda");
+    const botonAnterior = document.getElementById("pagina-anterior");
+    const botonSiguiente = document.getElementById("pagina-siguiente");
+    const numeroPagina = document.getElementById("numero-pagina");
+    const apiUrl = resultados.dataset.apiUrl;
+    const detalleUrl = resultados.dataset.detalleUrl;
+    let enlaceAnterior = null;
+    let enlaceSiguiente = null;
+
+    function crearElemento(etiqueta, texto, clase) {
+        const elemento = document.createElement(etiqueta);
+        if (texto) elemento.textContent = texto;
+        if (clase) elemento.className = clase;
+        return elemento;
+    }
+
+    function dibujarJuegos(juegos) {
+        resultados.replaceChildren();
+
+        if (juegos.length === 0) {
+            estado.textContent = "No se encontraron juegos.";
+            return;
+        }
+
+        estado.textContent = "";
+        for (const juego of juegos) {
+            const tarjeta = crearElemento("article", null, "card");
+            if (juego.imagen) {
+                const imagen = crearElemento("img");
+                imagen.src = juego.imagen;
+                imagen.alt = juego.titulo;
+                tarjeta.append(imagen);
+            }
+
+            const cuerpo = crearElemento("div", null, "card-body");
+            const titulo = crearElemento("h3");
+            const enlace = crearElemento("a", juego.titulo);
+            enlace.href = detalleUrl.replace(/0\/$/, `${juego.id}/`);
+            titulo.append(enlace);
+            cuerpo.append(titulo);
+
+            const tipo = juego.tipo === "web" ? "Jugable en la web" : "Para instalar";
+            cuerpo.append(crearElemento("span", tipo, "badge"));
+
+            const generos = crearElemento("p");
+            for (const genero of juego.generos || []) {
+                generos.append(crearElemento("span", genero, "badge"));
+            }
+            cuerpo.append(generos);
+            tarjeta.append(cuerpo);
+            resultados.append(tarjeta);
+        }
+    }
+
+    async function cargarJuegos(url = null) {
+        estado.textContent = "Buscando juegos…";
+        resultados.replaceChildren();
+
+        const parametros = new URLSearchParams();
+        if (inputTitulo.value.trim()) parametros.set("titulo", inputTitulo.value.trim());
+        if (selectTipo.value) parametros.set("tipo", selectTipo.value);
+        if (url) {
+            const pagina = new URL(url, window.location.origin).searchParams.get("page");
+            if (pagina) parametros.set("page", pagina);
+        }
+
+        const paginaActual = parametros.get("page");
+        const urlPagina = new URL(window.location.href);
+        urlPagina.search = "";
+        if (inputTitulo.value.trim()) urlPagina.searchParams.set("titulo", inputTitulo.value.trim());
+        if (selectTipo.value) urlPagina.searchParams.set("tipo", selectTipo.value);
+        if (paginaActual) urlPagina.searchParams.set("page", paginaActual);
+        window.history.replaceState({}, "", urlPagina);
+
+        try {
+            const respuesta = await fetch(`${apiUrl}?${parametros.toString()}`, {
+                headers: { "Accept": "application/json" }
+            });
+            if (!respuesta.ok) throw new Error("No se pudieron cargar los juegos.");
+            const datos = await respuesta.json();
+
+            dibujarJuegos(datos.results || []);
+            enlaceAnterior = datos.previous;
+            enlaceSiguiente = datos.next;
+            botonAnterior.disabled = !enlaceAnterior;
+            botonSiguiente.disabled = !enlaceSiguiente;
+            numeroPagina.textContent = datos.count
+                ? `Página ${paginaActual || 1} · ${datos.count} juegos`
+                : "";
+        } catch (error) {
+            estado.textContent = "No se pudieron cargar los juegos. Intenta de nuevo.";
+            botonAnterior.disabled = true;
+            botonSiguiente.disabled = true;
+        }
+    }
+
+    form.addEventListener("submit", (evento) => {
+        evento.preventDefault();
+        cargarJuegos();
+    });
+    botonAnterior.addEventListener("click", () => cargarJuegos(enlaceAnterior));
+    botonSiguiente.addEventListener("click", () => cargarJuegos(enlaceSiguiente));
+
+    const parametrosIniciales = new URLSearchParams(window.location.search);
+    inputTitulo.value = parametrosIniciales.get("titulo") || "";
+    selectTipo.value = parametrosIniciales.get("tipo") || "";
+    cargarJuegos(window.location.href);
+})();
+</script>
 {% endblock %}
